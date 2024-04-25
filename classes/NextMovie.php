@@ -13,17 +13,6 @@ class NextMovie {
         private string $overview,
     ){}
 
-    public function get_until_message() : string {
-        $days = $this->days_until;
-        return match (true) {
-            $days === 0 => "Hoy se estrena! 🥳",
-            $days < 1 => "Mañana se estrena! 🚀",
-            $days < 7 => "🗓️ Esta semana se estrena! ($days días)",
-            $days < 30 => "🗓️ Este mes se estrena! ($days días)",
-            default => "🗓️ $days días para el estreno!"
-        };
-    }
-
     public static function fetch_and_create_movie(string $api_url) : NextMovie{
         $result = file_get_contents($api_url);
         $data = json_decode($result, true);
@@ -37,7 +26,19 @@ class NextMovie {
         );
     }
 
+    public function get_until_message() : string {
+        $days = $this->days_until;
+        return match (true) {
+            $days === 0 => "Hoy se estrena! 🥳",
+            $days < 1 => "Mañana se estrena! 🚀",
+            $days < 7 => "🗓️ Esta semana se estrena! ($days días)",
+            $days < 30 => "🗓️ Este mes se estrena! ($days días)",
+            default => "🗓️ $days días para el estreno!"
+        };
+    }
+
     public function get_data (){
         return get_object_vars($this);
     }
+    
 } 
